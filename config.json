@@ -1,5 +1,6 @@
 {
     "keywordFilePath":"test/keywords.csv",
-    "textFilePath":"test/test_files.csv",
+    "textFilePath":"test/test_file.txt",
+    "listOfTextFilesPath":"test/test_files.csv",
     "outputFilePath":"test/test_result.csv"
 }
