@@ -17,7 +17,7 @@ int main() {
     cout << "BUILD TIME (s): " << elapsed_seconds.count() << endl;
     
     auto start2 = chrono::system_clock::now();
-    vector<Match> matches = processor->searchMultipleFiles(config->listOfTextFilePath);
+    vector<Match> matches = processor->searchTextFromFile(config->textFilePath);
     processor->writeResults(matches, config->outputFilePath);
     auto end2 = chrono::system_clock::now();
     chrono::duration<double> elapsed_seconds2 = end2 - start2;
