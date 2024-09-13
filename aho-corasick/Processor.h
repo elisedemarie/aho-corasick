@@ -8,13 +8,19 @@
 
 using namespace std;
 
+struct Match {
+    string matchedText;
+    string fileName;
+};
+
 class Processor {
     private:
         Trie* trie;
     public:
         void addKeywordsFromSet(unordered_set<string> keywords);
         void addKeywordsFromFile(string filePath);
-        vector<Match> searchTextFromString(string text, string textname="\0");
+        void addKeywordsFromVector(vector<string> keywords);
+        vector<string> searchTextFromString(string text);
         vector<Match> searchTextFromFile(string filePath);
         vector<Match> searchMultipleFiles(string listFilePath);
         void writeResults(vector<Match> results, string fileName);

@@ -1,0 +1,56 @@
+[
+    {
+        "case": "can find word",
+        "keywords": ["cat"],
+        "text": "cat",
+        "target":"cat"
+    },
+    {
+        "case": "can find word surrounded by whitespace",
+        "keywords": ["cat"],
+        "text": " cat ",
+        "target": "cat"
+    },
+    {
+        "case": "can find word surrounded by characters",
+        "keywords": ["cat"],
+        "text": "xgdcaturh",
+        "target": "cat"
+    },
+    {
+        "case": "can find word when subset of other keyword",
+        "keywords": ["cat", "concatenate"],
+        "text": "concatenate",
+        "target": ["cat", "concatenate"]
+    },
+    {
+        "case": "does not find when when broken by character",
+        "keywords": ["cat"],
+        "text": "cart",
+        "target": []
+    },
+    {
+        "case": "does not find when when broken by whitespace",
+        "keywords": ["cat"],
+        "text": "ca t",
+        "target": []
+    },
+    {
+        "case": "does not find when when broken by newline",
+        "keywords": ["cat"],
+        "text": "ca\nt",
+        "target": []
+    },
+    {
+        "case": "does not find when broken by another keyword",
+        "keywords": ["cat", "dog"],
+        "text": "cadogat",
+        "target": ["dog"]
+    },
+    {
+        "case": "can find word when word appends partial keyword",
+        "keywords": ["cat", "drive"],
+        "text": "drivcat",
+        "target": ["cat"]
+    }
+]

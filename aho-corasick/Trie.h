@@ -8,11 +8,6 @@
 
 using namespace std;
 
-struct Match {
-    string matchedText;
-    string fileName;
-};
-
 class Trie {
     private:
         static TrieNode* root;
@@ -26,7 +21,7 @@ class Trie {
          : wordSet(words) {
             build();
         }
-        vector<Match> searchString(string text, string textName);
+        vector<string> searchString(string text);
 };
 
 #endif

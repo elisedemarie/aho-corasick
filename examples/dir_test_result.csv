@@ -1,0 +1,12 @@
+MATHCED_TEXT,FILE_NAME
+cat,examples/sample_files/1.txt
+dog,examples/sample_files/1.txt
+cat,examples/sample_files/1.txt
+dog,examples/sample_files/1.txt
+cat,examples/sample_files/1.txt
+dog,examples/sample_files/2.txt
+cat,examples/sample_files/2.txt
+dog,examples/sample_files/2.txt
+9005,examples/sample_files/2.txt
+null,examples/sample_files/3.txt
+3,examples/sample_files/3.txt

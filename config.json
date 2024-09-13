@@ -1,6 +1,6 @@
 {
-    "keywordFilePath":"test/keywords.csv",
-    "textFilePath":"test/test_files/1.txt",
-    "listOfTextFilesPath":"test/test_files.csv",
-    "outputFilePath":"test/single_file_test_result.csv"
+    "keywordFilePath":"examples/keywords.csv",
+    "textFilePath":"examples/sample_files/1.txt",
+    "listOfTextFilesPath":"examples/example_files.csv",
+    "outputFilePath":"examples/file_test_result.csv"
 }

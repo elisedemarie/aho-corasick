@@ -24,8 +24,16 @@ void Processor::addKeywordsFromFile(string filePath) {
     addKeywordsFromSet(keywords);
 }
 
-vector<Match> Processor::searchTextFromString(string text, string textName) {
-    return trie->searchString(text, textName);
+void Processor::addKeywordsFromVector(vector<string> keywords) {
+    unordered_set<string> keywordSet;
+    for (const string& keyword : keywords) {
+        keywordSet.insert(keyword);
+    }
+    addKeywordsFromSet(keywordSet);
+}
+
+vector<string> Processor::searchTextFromString(string text) {
+    return trie->searchString(text);
 }
 
 vector<Match> Processor::searchTextFromFile(string fileName) {
@@ -34,7 +42,15 @@ vector<Match> Processor::searchTextFromFile(string fileName) {
     buffer << txtFile.rdbuf();
     string text = buffer.str();
     txtFile.close();
-    return searchTextFromString(text, fileName);
+    vector<string> matches = searchTextFromString(text);
+    vector<Match> output;
+    for (const string& matchedText : matches) {
+        Match match;
+        match.matchedText = matchedText;
+        match.fileName = fileName;
+        output.push_back(match);
+    }
+    return output;
 }
 
 vector<Match> Processor::searchMultipleFiles(string listFilePath) {
