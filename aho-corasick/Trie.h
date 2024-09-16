@@ -21,7 +21,7 @@ class Trie {
          : wordSet(words) {
             build();
         }
-        vector<string> searchString(string text);
+        vector<string*> searchString(string text);
 };
 
 #endif
