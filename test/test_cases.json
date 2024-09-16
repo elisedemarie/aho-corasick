@@ -3,19 +3,19 @@
         "case": "can find word",
         "keywords": ["cat"],
         "text": "cat",
-        "target":"cat"
+        "target":["cat"]
     },
     {
         "case": "can find word surrounded by whitespace",
         "keywords": ["cat"],
         "text": " cat ",
-        "target": "cat"
+        "target": ["cat"]
     },
     {
         "case": "can find word surrounded by characters",
         "keywords": ["cat"],
         "text": "xgdcaturh",
-        "target": "cat"
+        "target": ["cat"]
     },
     {
         "case": "can find word when subset of other keyword",
@@ -52,5 +52,17 @@
         "keywords": ["cat", "drive"],
         "text": "drivcat",
         "target": ["cat"]
+    },
+    {
+        "case": "can find word when word prepends keyword",
+        "keywords": ["cat", "drive"],
+        "text": "catdrive",
+        "target": ["cat", "drive"]
+    },
+    {
+        "case": "can find word when word appends keyword",
+        "keywords": ["cat", "drive"],
+        "text": "drivecat",
+        "target": ["drive", "cat"]
     }
 ]
