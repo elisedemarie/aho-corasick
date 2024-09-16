@@ -73,8 +73,8 @@ void Trie::build() {
     addAllEdges();
 }
 
-vector<string> Trie::searchString(string text) {
-    vector<string> matches;
+vector<string*> Trie::searchString(string text) {
+    vector<string*> matches;
     TrieNode* pointer = root;
     for (const char& c : text) {
         while ((pointer != root) && (!pointer->checkChild(c))) {
@@ -83,10 +83,10 @@ vector<string> Trie::searchString(string text) {
         if (pointer->checkChild(c)) {
             pointer = pointer->getChild(c);
             if (wordSet.count(*(pointer->getString()))) {
-                matches.push_back( *(pointer->getString()));
+                matches.push_back(pointer->getString());
             }
             else if (pointer->getOutput()) {
-                matches.push_back(*(pointer->getOutput()->getString()));
+                matches.push_back(pointer->getOutput()->getString());
             }
         }
     }
