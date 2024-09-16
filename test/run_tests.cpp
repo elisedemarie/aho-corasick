@@ -11,16 +11,20 @@ using json = nlohmann::json;
 void testCase(string caseName, vector<string> keywords, string text, vector<string> target) {
     Processor* processer = new Processor();
     processer->addKeywordsFromVector(keywords);
-    vector<string> result = processer->searchTextFromString(text);
-    
-    if (!(target == result)) {
+    vector<string*> result = processer->searchTextFromString(text);
+    vector<string> resultStrings;
+    // convert pointers to objects for comparison
+    for (const string* word : result) {
+        resultStrings.push_back(*word);
+    }
+    if (!(target == resultStrings)) {
         cout << "FAILED: " << caseName << endl;
         cout << "\tsearch for: " << endl;
-        for (const string& res : target) {
+        for (const string res : target) {
                 cout << "\t\t" << res << endl;
             }
         cout << "\tfound: " << endl;
-        for (const string& res : result) {
+        for (const string res : resultStrings) {
                 cout << "\t\t" << res << endl;
             }
     }
@@ -31,7 +35,7 @@ void testCase(string caseName, vector<string> keywords, string text, vector<stri
 
 int main() {
 
-    ifstream jsonFile("test/test_cases.json");
+    ifstream jsonFile("test_cases.json");
     json testCases;
     jsonFile >> testCases;
     jsonFile.close();
@@ -42,11 +46,12 @@ int main() {
         auto testTarget = test["target"];
         vector<string> keywords;
         vector<string> target;
+        vector<string> targetStrings;
         for (const string& keyword : testKeywords) {
             keywords.push_back(keyword);
         }
-        for (const string& testTarget : testTarget) { 
-            target.push_back(testTarget);
+        for (const string& word : testTarget) { 
+            target.push_back(word);
         }
         testCase(caseName, keywords, text, target);
     }
