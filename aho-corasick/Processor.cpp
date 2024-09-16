@@ -1,94 +1,77 @@
+# include "Processor.h"
 # include "Trie.h"
-# include "TrieNode.h"
-# include <iostream>
-# include <deque>
+# include <unordered_set>
+# include <string>
+# include <fstream>
+# include <sstream>
 # include <vector>
-# include <chrono>
-# include <ctime>
+# include <iostream>
 
-TrieNode* Trie::root = new TrieNode('\0');
+using namespace std;
 
-void Trie::buildWordSetTrie() {
-    for (const string& word : wordSet) {
-        TrieNode* pointer = root;
-        for (const char& c : word) {
-            pointer = pointer->getOrAddChild(c);
-        }
+void Processor::addKeywordsFromSet(unordered_set<string> keywords){
+    trie = new Trie(keywords);
+}
+
+void Processor::addKeywordsFromFile(string filePath) {
+    unordered_set<string> keywords;
+    ifstream kwdFile(filePath);
+    string keyword;
+    while(getline(kwdFile, keyword)) {
+        keywords.insert(keyword);
+    }
+    kwdFile.close();
+    addKeywordsFromSet(keywords);
+}
+
+void Processor::addKeywordsFromVector(vector<string> keywords) {
+    unordered_set<string> keywordSet;
+    for (const string& keyword : keywords) {
+        keywordSet.insert(keyword);
+    }
+    addKeywordsFromSet(keywordSet);
+}
+
+vector<string*> Processor::searchTextFromString(string text) {
+    return trie->searchString(text);
+}
+
+void Processor::searchTextFromFile(string fileName) {
+    stringstream buffer;
+    ifstream txtFile(fileName);
+    buffer << txtFile.rdbuf();
+    string text = buffer.str();
+    txtFile.close();
+    vector<string*> textMatches = searchTextFromString(text);
+    for (const string* text : textMatches) {
+        Match match;
+        match.matchedText = text;
+        match.fileName = fileName;
+        matches.push_back(match);
     }
 }
 
-void Trie::addEdges(TrieNode* node) {
-    if (node==root) {
-        node->setSuffix(root);
-        node->setOutput(root->getOutput());
-        return;
+void Processor::searchMultipleFiles(string listFilePath) {
+    ifstream allFiles(listFilePath);
+    string filePath;
+    while(getline(allFiles, filePath)) {
+        searchTextFromFile(filePath);
     }
-    if (node->getParent() == root) {
-        node->setSuffix(root);
-    }
-    else {
-        TrieNode* suffixPointer = node->getParent()->getSuffix();
-        while (true) {
-            if (suffixPointer->checkChild(node->getCharacter())) {
-                node->setSuffix(suffixPointer->getChild(node->getCharacter()));
-                break;
-            }
-            else if (suffixPointer == root) {
-                node->setSuffix(root);
-                break;
-            }
-            else {
-                suffixPointer = suffixPointer->getSuffix();
-            }
-        }
-    }
-    if (wordSet.count(*(node->getSuffix()->getString()))) {
-        node->setOutput(node->getSuffix());
-    }
-    else {
-        node->setOutput(node->getSuffix()->getOutput());
-    }
-};
-
-void addChildrenToQueue(TrieNode* node, deque<TrieNode*>* queuePointer) {
-    vector<TrieNode*>* childVector = node->getAllChildren();
-    for (TrieNode* child : *childVector) {
-        queuePointer->push_back(child);
-    }
+    allFiles.close();
 }
 
-void Trie::addAllEdges() {
-    deque<TrieNode*> nodeQueue;
-    addChildrenToQueue(root, &nodeQueue);
-    while (!nodeQueue.empty()) {
-        TrieNode* node = nodeQueue.front();
-        addChildrenToQueue(node, &nodeQueue);
-        addEdges(node);
-        nodeQueue.pop_front();
+void Processor::writeResults(string filePath) {
+    ofstream resultsFile;
+    resultsFile.open(filePath);
+    resultsFile << "MATHCED_TEXT,FILE_NAME\n";
+    for (const Match& match : matches) {
+        resultsFile << *match.matchedText << ",";
+        resultsFile << match.fileName;
+        resultsFile << "\n";
     }
+    resultsFile.close();
 }
 
-void Trie::build() {
-    buildWordSetTrie();
-    addAllEdges();
-}
-
-vector<string*> Trie::searchString(string text) {
-    vector<string*> matches;
-    TrieNode* pointer = root;
-    for (const char& c : text) {
-        while ((pointer != root) && (!pointer->checkChild(c))) {
-            pointer = pointer->getSuffix();
-        }
-        if (pointer->checkChild(c)) {
-            pointer = pointer->getChild(c);
-            if (wordSet.count(*(pointer->getString()))) {
-                matches.push_back(pointer->getString());
-            }
-            else if (pointer->getOutput()) {
-                matches.push_back(pointer->getOutput()->getString());
-            }
-        }
-    }
-    return matches;
+int Processor::countMatches() {
+    return matches.size();
 }
