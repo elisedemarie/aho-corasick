@@ -17,12 +17,12 @@ int main() {
     cout << "BUILD TIME (s): " << elapsed_seconds.count() << endl;
     
     auto start2 = chrono::system_clock::now();
-    vector<Match> matches = processor->searchMultipleFiles(config->listOfTextFilePath);
-    processor->writeResults(matches, config->outputFilePath);
+    processor->searchMultipleFiles(config->listOfTextFilePath);
+    processor->writeResults(config->outputFilePath);
     auto end2 = chrono::system_clock::now();
     chrono::duration<double> elapsed_seconds2 = end2 - start2;
     cout << "SEARCH TIME (s): " << elapsed_seconds2.count() << endl;
-    cout << "MATCHES: " << matches.size() << endl;
+    cout << "MATCHES: " << processor->countMatches() << endl;
     return 0;
 
 }
